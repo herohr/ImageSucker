@@ -1,6 +1,6 @@
 # ImageSucker
 Picture Converter with Python
-** 中文的图形界面， 中文的README **
+**中文的图形界面， 中文的README**
 ## QuickStart
 ### 左侧栏 FileBox
 是当前文件夹的文件列表，需要保持高亮选定
@@ -12,7 +12,7 @@ Picture Converter with Python
 ### 右侧栏 格式
 不可以加`.`， 可以缺省，缺省值为`jpeg`
 常见的图形格式都可以，如 ： `png`, `jpg`, `bmp`等
-**会把`jpg`后缀改为`jpeg`
+**会把`jpg`后缀改为`jpeg`**
 
 ### 右侧栏 六个常用尺寸
 添加了六个常用的尺寸，选定文件后直接按Button即可
