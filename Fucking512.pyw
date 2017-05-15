@@ -7,6 +7,7 @@ import threading
 
 class GUI:
     def __init__(self):
+        """初始化图形界面"""
         self.tk = tkinter.Tk(className="Ralee Studio 图片格式转换工具")
 
         self.file_box = None
@@ -24,7 +25,7 @@ class GUI:
 
     def make_two_entry(self):
         self.size_label = tkinter.Label(text="尺寸")
-        self.size_entry_1 = tkinter.Entry(width=10  )
+        self.size_entry_1 = tkinter.Entry(width=10)
         self.size_entry_2 = tkinter.Entry(width=10)
         self.size_label.grid(row=0, column=1, columnspan=2)
         self.size_entry_1.grid(row=1, column=1)
@@ -47,6 +48,7 @@ class GUI:
         self.save_size_label.grid(row=7, column=1, columnspan=2)
 
     def make_resize_function(self, size):
+        """为resize_button绑定回调"""
         def resize():
             filename = self.file_box.get(self.file_box.curselection()[0])
             self.format(filename, '{}x{}'.format(size, size), (size, size), 'jpeg')
@@ -58,10 +60,11 @@ class GUI:
 
         for (index, size) in enumerate(sizes):
             button = tkinter.Button(text='{}*{}'.format(size, size),
-                                                         width=10,
-                                                         command=self.make_resize_function(size))
+                                    width=10,
+                                    command=self.make_resize_function(size))
 
-            button.grid(row=8+index//2, column=1 + index % 2)
+            button.grid(row=8 + index // 2, column=1 + index % 2)
+
     def selected_form(self):
         try:
             filename = self.file_box.get(self.file_box.curselection()[0])
@@ -79,14 +82,16 @@ class GUI:
             show_info('好像没选中文件？')
 
     def format(self, filename, rename, size=(), form='jpeg'):
+        """有关图形界面的一个format函数，实际的转换函数为异步执行"""
         def do_format():
             try:
                 file_size = format_img("./" + filename, rename, size, form)
             except Exception as e:
                 show_info(e)
             else:
-                messagebox.showinfo('转换完成','文件大小: {:.2f} KB'.format(file_size/1024))
-        threading.Thread(target=do_format).start()
+                messagebox.showinfo('转换完成', '文件大小: {:.2f} KB'.format(file_size / 1024))
+
+        threading.Thread(target=do_format).start()  # 异步执行
 
 
 def show_info(msg):
@@ -95,16 +100,18 @@ def show_info(msg):
 
 def list_files():
     a = os.listdir(os.getcwd())
-    return [file for file in a if os.path.isfile('./' + file)]
+    return [file for file in a if os.path.isfile('./' + file)]  # 一个当前目录文件的列表
 
 
 def format_img(img_path, img_name="unnaming", img_size=(), img_form='jpeg'):
     with Image.open(img_path) as image:
-        img_form = "jpeg" if img_form.lower() == "jpg" else img_form
-        output = image.resize(img_size, Image.ANTIALIAS)
+        img_form = "jpeg" if img_form.lower() == "jpg" else img_form  # 将"jpg" 变为 "jpeg"
+        output = image.resize(img_size, Image.ANTIALIAS)  # Image.ANTIALIAS 在这里可以增强画质
 
-        img_name = img_name+'.'+img_form if not img_name.split('.')[-1] == img_form else img_name
+        img_name = img_name + '.' + img_form if not img_name.split('.')[-1] == img_form else img_name  # 防止多个后缀名...
         output.save(img_name, img_form)
-        return os.path.getsize("./{}".format(img_name))
+        return os.path.getsize("./{}".format(img_name))  # 文件大小
 
-GUI()
+
+if __name__ == "__main__":
+    GUI()
