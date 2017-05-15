@@ -2,6 +2,9 @@
 Picture Converter with Python 图片转换工具  
 **中文的图形界面， 中文的README**
 ## QuickStart
+### 安装pillow
+pip3 install pillow
+
 ### 左侧栏 FileBox
 是当前文件夹的文件列表，需要保持高亮选定
 
