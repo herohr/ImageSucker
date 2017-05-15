@@ -43,7 +43,7 @@ class GUI:
 
     def make_save_button(self):
         self.save_size_label = tkinter.Label(text="预计大小: 未知")
-        self.save_button = tkinter.Button(text="保存", command=self.format)
+        self.save_button = tkinter.Button(text="保存", command=self.selected_form)
         self.save_button.grid(row=6, column=1, columnspan=2)
         self.save_size_label.grid(row=7, column=1, columnspan=2)
 
@@ -68,16 +68,16 @@ class GUI:
     def selected_form(self):
         try:
             filename = self.file_box.get(self.file_box.curselection()[0])
-            if filename:
-                width = int(self.size_entry_1.get())
-                height = int(self.size_entry_2.get())
-                if width and height:
-                    form = self.form_entry.get()
-                    form = form if form else 'jpeg'
-                    rename = self.rename_entry.get()
-                    return format(filename, rename, (width, height), form)
-                else:
-                    show_info("好像没输入尺寸？")
+            width = self.size_entry_1.get()
+            height = self.size_entry_2.get()
+            if width and height:
+                width, height = int(width), int(height)
+                form = self.form_entry.get()
+                form = form if form else 'jpeg'
+                rename = self.rename_entry.get()
+                return self.format(filename, rename, size=(width, height), form=form)
+            else:
+                show_info("好像没输入尺寸？")
         except IndexError:
             show_info('好像没选中文件？')
 
