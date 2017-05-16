@@ -15,13 +15,16 @@ class GUI:
         self.make_two_entry()
         self.make_save_button()
         self.make_lot_size_button()
+        self.make_download_pillow_button()
         self.tk.mainloop()
+
+
 
     def make_file_box(self):
         self.file_box = tkinter.Listbox(width=30, height=20)
         for i in list_files():
             self.file_box.insert(0, i)
-        self.file_box.grid(row=0, column=0, rowspan=12)
+        self.file_box.grid(row=0, column=0, rowspan=13)
 
     def make_two_entry(self):
         self.size_label = tkinter.Label(text="尺寸")
@@ -65,6 +68,11 @@ class GUI:
 
             button.grid(row=8 + index // 2, column=1 + index % 2)
 
+    def make_download_pillow_button(self):
+
+        self.download_button = tkinter.Button(text='获取PIL模块', command=get_pillow)
+        self.download_button.grid(row=12, column=1, columnspan=2)
+
     def selected_form(self):
         try:
             filename = self.file_box.get(self.file_box.curselection()[0])
@@ -92,6 +100,10 @@ class GUI:
                 messagebox.showinfo('转换完成', '文件大小: {:.2f} KB'.format(file_size / 1024))
 
         threading.Thread(target=do_format).start()  # 异步执行
+
+
+def get_pillow():
+    threading.Thread(target=lambda: messagebox.showinfo('安装', os.popen('pip3 install pillow').read())).start()
 
 
 def show_info(msg):
